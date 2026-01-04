@@ -2,7 +2,7 @@
 
 Terraform module for bootstrapping Talos Linux Kubernetes clusters.
 
-This module handles:
+## Features
   - Machine secrets generation
   - Control plane and worker node configuration
   - Custom configuration patches (static YAML or templates)
@@ -51,7 +51,7 @@ This module handles:
 | <a name="input_talos_vip"></a> [talos\_vip](#input\_talos\_vip) | Virtual IP address for control plane high availability. Used as the cluster API endpoint address. | `string` | n/a | yes |
 | <a name="input_talos_worker_config_patches"></a> [talos\_worker\_config\_patches](#input\_talos\_worker\_config\_patches) | List of machine configuration patch file paths for worker nodes. Files ending in .tftpl are processed as templates with access to the following variables: hostname, install\_disk, node\_ip, cluster\_name, cluster\_endpoint. Paths are relative to the calling module. | `list(string)` | n/a | yes |
 | <a name="input_talos_node_data"></a> [talos\_node\_data](#input\_talos\_node\_data) | Map of Talos nodes by IP address. Contains controlplanes and workers maps where keys are node IP addresses and values specify install\_disk (required) and hostname (optional). | <pre>object({<br/>    controlplanes = map(object({<br/>      install_disk = string<br/>      hostname     = optional(string)<br/>    }))<br/>    workers = map(object({<br/>      install_disk = string<br/>      hostname     = optional(string)<br/>    }))<br/>  })</pre> | <pre>{<br/>  "controlplanes": {<br/>    "10.5.0.2": {<br/>      "hostname": "controlplane-1",<br/>      "install_disk": "/dev/sda"<br/>    },<br/>    "10.5.0.3": {<br/>      "hostname": "controlplane-2",<br/>      "install_disk": "/dev/sda"<br/>    },<br/>    "10.5.0.4": {<br/>      "hostname": "controlplane-3",<br/>      "install_disk": "/dev/sda"<br/>    }<br/>  },<br/>  "workers": {<br/>    "10.5.0.5": {<br/>      "hostname": "worker-1",<br/>      "install_disk": "/dev/sda"<br/>    }<br/>  }<br/>}</pre> | no |
-| <a name="input_talos_version"></a> [talos\_version](#input\_talos\_version) | Version of Talos features to use in generated machine configuration. Must include a v prefix. | `string` | `null` | no |
+| <a name="input_talos_version"></a> [talos\_version](#input\_talos\_version) | Version of Talos features to use in the generated machine configuration. Must include a v prefix. This value should be set once at the moment of cluster creation and never changed through the lifetime of the cluster, even if the cluster is upgraded. | `string` | `null` | no |
 
 ## Outputs
 
