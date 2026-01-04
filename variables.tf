@@ -50,7 +50,7 @@ variable "talos_node_data" {
 }
 
 variable "talos_version" {
-  description = "Version of Talos features to use in generated machine configuration. Must include a v prefix."
+  description = "Version of Talos features to use in the generated machine configuration. Must include a v prefix. This value should be set once at the moment of cluster creation and never changed through the lifetime of the cluster, even if the cluster is upgraded."
   type        = string
   default     = null
 }
