@@ -92,15 +92,19 @@ resource "talos_cluster_kubeconfig" "this" {
 }
 
 resource "local_file" "talosconfig" {
+  count = var.talosconfig_path != null ? 1 : 0
+
   depends_on = [talos_machine_bootstrap.this]
 
   content  = data.talos_client_configuration.this.talos_config
-  filename = pathexpand("~/.talos/config")
+  filename = pathexpand(var.talosconfig_path)
 }
 
 resource "local_file" "kubeconfig" {
+  count = var.kubeconfig_path != null ? 1 : 0
+
   depends_on = [talos_machine_bootstrap.this]
 
   content  = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename = pathexpand("~/.kube/config")
+  filename = pathexpand(var.kubeconfig_path)
 }
