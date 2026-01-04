@@ -3,7 +3,7 @@
  *
  * Terraform module for bootstrapping Talos Linux Kubernetes clusters.
  *
- * This module handles:
+ * ## Features
  *   - Machine secrets generation
  *   - Control plane and worker node configuration
  *   - Custom configuration patches (static YAML or templates)
