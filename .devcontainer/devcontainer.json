@@ -1,0 +1,16 @@
+{
+  "name": "terraform-talos-bootstrap",
+  "image": "mcr.microsoft.com/devcontainers/base:debian12",
+  "features": {
+    "ghcr.io/bendwyer/devcontainer-features/terraform:2.0.0": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "hashicorp.hcl",
+        "github.vscode-github-actions",
+        "GitHub.vscode-pull-request-github"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+---
+name: promote-major-version
+
+on:
+  release:
+    types:
+      - published
+      - edited
+
+jobs:
+  promote:
+    uses: bendwyer/github-workflows/.github/workflows/github-action-promote-major-version.yml@main
+    with:
+      gh_app_id: ${{ vars.GH_APP_ID }}
+    secrets:
+      gh_app_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
