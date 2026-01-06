@@ -61,5 +61,7 @@ Terraform module for bootstrapping Talos Linux Kubernetes clusters.
 |------|-------------|
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Raw Kubernetes kubeconfig for the Talos cluster, used to authenticate with the Kubernetes API server. |
 | <a name="output_kubeconfig_client"></a> [kubeconfig\_client](#output\_kubeconfig\_client) | Kubernetes client configuration for programmatic API access to the Talos cluster. |
+| <a name="output_machine_configuration_controlplane"></a> [machine\_configuration\_controlplane](#output\_machine\_configuration\_controlplane) | Generated Talos machine config(s) for controlplane nodes(s). |
+| <a name="output_machine_configuration_worker"></a> [machine\_configuration\_worker](#output\_machine\_configuration\_worker) | Generated Talos machine config(s) for worker node(s). |
 | <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | Talos client configuration for machine and cluster administration via the Talos API. |
 
