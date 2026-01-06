@@ -21,36 +21,36 @@ variable "talos_controlplane_config_patches" {
 }
 
 variable "talos_node_data" {
-  description = "Map of Talos nodes by IP address. Contains controlplanes and workers maps where keys are node IP addresses and values specify install_disk (required) and hostname (optional)."
+  description = "Map of Talos nodes by hostname. Contains controlplanes and workers maps where keys are node hostnames and values specify node_ip (required) and install_disk (required)."
   type = object({
     controlplanes = map(object({
+      node_ip      = string
       install_disk = string
-      hostname     = optional(string)
     }))
     workers = map(object({
+      node_ip      = string
       install_disk = string
-      hostname     = optional(string)
     }))
   })
   default = {
     controlplanes = {
-      "10.5.0.2" = {
+      "controlplane-1" = {
+        node_ip      = "10.5.0.2"
         install_disk = "/dev/sda"
-        hostname     = "controlplane-1"
       },
-      "10.5.0.3" = {
+      "controlplane-2" = {
+        node_ip      = "10.5.0.3"
         install_disk = "/dev/sda"
-        hostname     = "controlplane-2"
       },
-      "10.5.0.4" = {
+      "controlplane-3" = {
+        node_ip      = "10.5.0.4"
         install_disk = "/dev/sda"
-        hostname     = "controlplane-3"
       }
     }
     workers = {
-      "10.5.0.5" = {
+      "worker-1" = {
+        node_ip      = "10.5.0.5"
         install_disk = "/dev/sda"
-        hostname     = "worker-1"
       }
     }
   }
@@ -65,6 +65,7 @@ variable "talos_version" {
 variable "talos_vip" {
   description = "Virtual IP address for control plane high availability. Used as the cluster API endpoint address."
   type        = string
+  default     = null
 }
 
 variable "talos_worker_config_patches" {

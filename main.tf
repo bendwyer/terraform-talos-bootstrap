@@ -34,22 +34,22 @@ data "talos_machine_configuration" "worker" {
 data "talos_client_configuration" "this" {
   cluster_name         = var.talos_cluster_name
   client_configuration = talos_machine_secrets.this.client_configuration
-  endpoints            = keys(var.talos_node_data.controlplanes)
-  nodes                = concat(keys(var.talos_node_data.controlplanes), keys(var.talos_node_data.workers))
+  endpoints            = [for k, v in var.talos_node_data.controlplanes : v.node_ip]
+  nodes                = concat([for k, v in var.talos_node_data.controlplanes : v.node_ip], [for k, v in var.talos_node_data.workers : v.node_ip])
 }
 
 resource "talos_machine_configuration_apply" "controlplane" {
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
   for_each                    = var.talos_node_data.controlplanes
-  node                        = each.key
+  node                        = each.value.node_ip
   config_patches = [
     for patch_path in var.talos_controlplane_config_patches :
     can(regex("\\.tftpl$", patch_path))
     ? templatefile(patch_path, {
-      hostname         = each.value.hostname == null ? format("%s-cp-%s", var.talos_cluster_name, index(keys(var.talos_node_data.controlplanes), each.key)) : each.value.hostname
+      hostname         = each.key
       install_disk     = each.value.install_disk
-      node_ip          = each.key
+      node_ip          = each.value.node_ip
       vip              = var.talos_vip
       cluster_name     = var.talos_cluster_name
       cluster_endpoint = var.talos_cluster_endpoint
@@ -62,14 +62,14 @@ resource "talos_machine_configuration_apply" "worker" {
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
   for_each                    = var.talos_node_data.workers
-  node                        = each.key
+  node                        = each.value.node_ip
   config_patches = [
     for patch_path in var.talos_worker_config_patches :
     can(regex("\\.tftpl$", patch_path))
     ? templatefile(patch_path, {
-      hostname         = each.value.hostname == null ? format("%s-worker-%s", var.talos_cluster_name, index(keys(var.talos_node_data.workers), each.key)) : each.value.hostname
+      hostname         = each.key
       install_disk     = each.value.install_disk
-      node_ip          = each.key
+      node_ip          = each.value.node_ip
       cluster_name     = var.talos_cluster_name
       cluster_endpoint = var.talos_cluster_endpoint
     })
@@ -81,14 +81,14 @@ resource "talos_machine_bootstrap" "this" {
   depends_on = [talos_machine_configuration_apply.controlplane]
 
   client_configuration = talos_machine_secrets.this.client_configuration
-  node                 = keys(var.talos_node_data.controlplanes)[0]
+  node                 = values(var.talos_node_data.controlplanes)[0].node_ip
 }
 
 resource "talos_cluster_kubeconfig" "this" {
   depends_on = [talos_machine_bootstrap.this]
 
   client_configuration = talos_machine_secrets.this.client_configuration
-  node                 = keys(var.talos_node_data.controlplanes)[0]
+  node                 = values(var.talos_node_data.controlplanes)[0].node_ip
 }
 
 resource "local_file" "talosconfig" {
