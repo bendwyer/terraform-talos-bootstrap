@@ -13,15 +13,15 @@ Terraform module for bootstrapping Talos Linux Kubernetes clusters.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.12.2 |
-| <a name="requirement_local"></a> [local](#requirement\_local) | >=2.5.3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.2 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.5.3 |
 | <a name="requirement_talos"></a> [talos](#requirement\_talos) | >= 0.8.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_local"></a> [local](#provider\_local) | >=2.5.3 |
+| <a name="provider_local"></a> [local](#provider\_local) | >= 2.5.3 |
 | <a name="provider_talos"></a> [talos](#provider\_talos) | >= 0.8.1 |
 
 
