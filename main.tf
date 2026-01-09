@@ -54,7 +54,10 @@ resource "talos_machine_configuration_apply" "controlplane" {
       cluster_name     = var.talos_cluster_name
       cluster_endpoint = var.talos_cluster_endpoint
     })
-    : file(patch_path)
+    : (can(regex("^---\\n", patch_path)) || can(regex("\\n", patch_path))
+      ? patch_path       # It's YAML content, use as-is
+      : file(patch_path) # It's a file path, read it
+    )
   ]
 }
 
